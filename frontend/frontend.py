@@ -32,4 +32,4 @@ if st.button("Predict Premium Category"):
     response = requests.post(API_URL, json=input)
     result=response.json()
     if response.status_code==200:
-        st.success(result['response']['prediction'])
+        st.success(result["response"]['prediction'])
