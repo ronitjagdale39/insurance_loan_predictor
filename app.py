@@ -14,7 +14,7 @@ def status():
         'status':'OK'
     }
 @app.post('/prediction')    
-def prediction(user:UserInfo)    ->str:
+def prediction(user:UserInfo) :
     input_info={
         'bmi':user.bmi,
         'age_group':user.age_group,
@@ -25,8 +25,6 @@ def prediction(user:UserInfo)    ->str:
     }
     try:
         prediction_out=predicted_output(input_info)
-        return JSONResponse(status_code=200,content={
-            'response':prediction_out
-        })
+        return JSONResponse(status_code=200,content=prediction_out)
     except Exception as e:
         return JSONResponse(status_code=500,content=str(e))    

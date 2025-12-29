@@ -6,9 +6,9 @@ with open(filename,'rb') as f:
     model=pickle.load(f)
 def predicted_output(input_info:dict) :
     df=pd.DataFrame([input_info])
-    prediction=model.predict(df)[0]
+    prediction_data=model.predict(df)[0]
     return {
-        'prediction':prediction
+        'prediction':prediction_data
         
     }
            

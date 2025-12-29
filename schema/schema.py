@@ -24,10 +24,10 @@ class UserInfo(BaseModel):
         return bmi
     @computed_field
     @property
-    def city_tier(city)->int:
-        if city in tier_1_cities:
+    def city_tier(self)->int:
+        if self.city in tier_1_cities:
             return 1
-        elif city in tier_2_cities:
+        elif self.city in tier_2_cities:
             return 2
         return 3
     @computed_field
