@@ -30,6 +30,9 @@ if st.button("Predict Premium Category"):
         "occupation": occupation
     }
     response = requests.post(API_URL, json=input)
-    result=response.json()
+    
     if response.status_code==200:
-        st.success(result["response"]['prediction'])
+       result=response.json()
+       st.success(f"Prediction : {result['prediction']}")
+    else:
+        st.error("Failed to predict properly......")    
