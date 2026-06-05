@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-API_URL='http://127.0.0.1:8000/prediction'
+API_URL='http://backend:8000/prediction'
 st.title("👨🏻‍💼 INSURANCE PREMIUM PREDICTOR  ")
 age = st.number_input("Age", min_value=1, max_value=100, value=25)
 weight = st.number_input("Weight (kg)", min_value=1.0, value=65.0)
