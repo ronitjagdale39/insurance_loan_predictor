@@ -1,21 +1,187 @@
-# 💫 About Me:
-<br>🔭 I’m currently working on Insurance Loan Premium Prediction using Machine Learning  <br>👯 I’m looking to collaborate on AI/ML and real-world prediction systems  <br>🤝 I’m looking for help with improving model accuracy and deployment  <br>🌱 I’m currently learning Deep Learning, Model Optimization, and Backend Integration  <br>💬 Ask me about Machine Learning, Data Analysis, and Predictive Modeling  <br>⚡ Fun fact: I love turning data into real-world intelligent solutions 🚀
+# Insurance Loan Predictor API
 
-
-## 🌐 Socials:
-[![email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](mailto:ronit.jagdale.39@gmail.com) 
-
-# 💻 Tech Stack:
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi) ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Scipy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=for-the-badge&logo=scipy&logoColor=%white) ![Streamlit](https://img.shields.io/badge/Streamlit-%23FE4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white)
-# 📊 GitHub Stats:
-![](https://github-readme-stats.vercel.app/api?username=ronitjagdale39&theme=dark&hide_border=false&include_all_commits=false&count_private=false)<br/>
-![](https://nirzak-streak-stats.vercel.app/?user=ronitjagdale39&theme=dark&hide_border=false)<br/>
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=ronitjagdale39&theme=dark&hide_border=false&include_all_commits=false&count_private=false&layout=compact)
-
-## 🏆 GitHub Trophies
-![](https://github-profile-trophy.vercel.app/?username=ronitjagdale39&theme=dark&no-frame=false&no-bg=false&margin-w=4)
+A Machine Learning-powered Insurance Loan Prediction System built with FastAPI and Docker. The application predicts insurance loan outcomes based on user-provided information and exposes predictions through a scalable REST API.
 
 ---
-[![](https://visitcount.itsvg.in/api?id=ronitjagdale39&icon=0&color=0)](https://visitcount.itsvg.in)
 
-<!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
+## Features
+
+- Machine Learning based prediction engine
+- FastAPI REST API
+- Pydantic schema validation
+- Interactive Swagger API documentation
+- Dockerized deployment
+- Docker Compose support
+- Clean and modular project structure
+- Production-ready API architecture
+
+---
+
+## Tech Stack
+
+### Backend
+- Python
+- FastAPI
+
+### Machine Learning
+- NumPy
+- Pandas
+- Scikit-Learn
+
+### Validation
+- Pydantic
+
+### DevOps
+- Docker
+- Docker Compose
+- Docker Hub
+- GitHub
+
+---
+
+## Project Structure
+
+```text
+insurance_loan_predictor/
+│
+├── app/
+│   ├── config/
+│   ├── model/
+│   ├── schema/
+│   └── ...
+│
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
+
+---
+
+## Application Workflow
+
+```text
+User Input
+    │
+    ▼
+FastAPI API
+    │
+    ▼
+Schema Validation
+    │
+    ▼
+Machine Learning Model
+    │
+    ▼
+Prediction Response
+```
+
+---
+
+## Local Setup
+
+Clone the repository:
+
+```bash
+git clone https://github.com/ronitjagdale39/insurance_loan_predictor.git
+cd insurance_loan_predictor
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the application:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+---
+
+## API Documentation
+
+Swagger UI:
+
+```text
+http://localhost:8000/docs
+```
+
+ReDoc:
+
+```text
+http://localhost:8000/redoc
+```
+
+---
+
+## Docker Setup
+
+Build image:
+
+```bash
+docker build -t insurance_predictor .
+```
+
+Run container:
+
+```bash
+docker run -p 8000:8000 insurance_predictor
+```
+
+---
+
+## Docker Compose
+
+Start services:
+
+```bash
+docker compose up --build
+```
+
+Stop services:
+
+```bash
+docker compose down
+```
+
+---
+
+## Docker Hub
+
+Pull image:
+
+```bash
+docker pull dockerronii/insurance_predictor
+```
+
+Run image:
+
+```bash
+docker run -p 8000:8000 dockerronii/insurance_predictor
+```
+
+---
+
+## Future Improvements
+
+- PostgreSQL Integration
+- User Authentication & Authorization
+- CI/CD Pipeline with GitHub Actions
+- Cloud Deployment
+- Model Monitoring
+- Prediction History Tracking
+
+---
+
+## Author
+
+**Ronit Jagdale**
+
+B.Tech Information Technology  
+Pillai College, Panvel
+
+GitHub: https://github.com/ronitjagdale39
