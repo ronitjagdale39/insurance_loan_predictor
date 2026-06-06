@@ -38,6 +38,17 @@ A Machine Learning-powered Insurance Loan Prediction System built with FastAPI a
 - GitHub
 
 ---
+## Application Screenshots
+
+### Front Page
+
+![Front Page](images/frontpage.png)
+
+### Prediction Output
+
+![Prediction Output](images/output.png)
+
+---
 
 ## Project Structure
 
