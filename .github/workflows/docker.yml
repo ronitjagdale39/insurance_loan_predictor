@@ -21,3 +21,16 @@ jobs:
 
       - name: Login Success
         run: echo "Docker Login Successful"
+      - name: Docker auto creating image
+        uses: docker/build-push-action@v4
+        with:
+          context: app/frontend
+          push: true
+          tags: dockerronii/insurance_frontend:latest
+      - name: Docker auto creating image
+        uses: docker/build-push-action@v4
+        with:
+          context: app/main.py
+          push: true
+          tags: dockerronii/insurance_backend:latest
+          
