@@ -24,13 +24,15 @@ jobs:
       - name: Docker auto creating image
         uses: docker/build-push-action@v4
         with:
-          context: app/frontend
+          context: .
           push: true
+          file: Dockerfile.frontend
           tags: dockerronii/insurance_frontend:latest
       - name: Docker auto creating image
         uses: docker/build-push-action@v4
         with:
-          context: app/main.py
+          context: .
           push: true
+          file: Dockerfile.backend
           tags: dockerronii/insurance_backend:latest
           
