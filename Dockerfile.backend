@@ -6,9 +6,10 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
+COPY app/model/model.pkl app/model/model.pkl
+
 COPY . .
 
-RUN ls -la /app/app/model
 
 EXPOSE 8000
 
