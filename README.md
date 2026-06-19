@@ -187,7 +187,7 @@ docker run -p 8000:8000 dockerronii/insurance_predictor
 
 - PostgreSQL Integration
 - User Authentication & Authorization
-- CI/CD Pipeline with GitHub Actions
+- Adding New API's for predicting premium amount and days remaining
 - Cloud Deployment
 - Model Monitoring
 - Prediction History Tracking
