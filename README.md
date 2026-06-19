@@ -14,6 +14,7 @@ A Machine Learning-powered Insurance Loan Prediction System built with FastAPI a
 - Docker Compose support
 - Clean and modular project structure
 - Production-ready API architecture
+- added CI/CD pipeline 
 
 ---
 
@@ -187,7 +188,7 @@ docker run -p 8000:8000 dockerronii/insurance_predictor
 
 - PostgreSQL Integration
 - User Authentication & Authorization
-- Adding New API's for predicting premium amount and days remaining
+- CI/CD Pipeline with GitHub Actions
 - Cloud Deployment
 - Model Monitoring
 - Prediction History Tracking
