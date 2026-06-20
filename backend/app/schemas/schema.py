@@ -1,6 +1,6 @@
 from pydantic import BaseModel,field_validator,computed_field,Field
 from typing import Annotated,Optional,Literal
-from app.config.city_tier import tier_1_cities,tier_2_cities
+from app.core.city_tier import tier_1_cities,tier_2_cities
 class UserInfo(BaseModel):
     age:Annotated[int,Field(...,description="enter you name here :",examples=[19])]
     weight: Annotated[float, Field(..., gt=0, description='Weight of the user')]

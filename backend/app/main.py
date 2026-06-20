@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.schema.schema import UserInfo
-from app.model.predict import predicted_output
+from app.schemas.schema import UserInfo
+from app.services.prediction import predicted_output
 app=FastAPI(title="Insurance premium predictor",version="1.0")
 app.add_middleware(
     CORSMiddleware,

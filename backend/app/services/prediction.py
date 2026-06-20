@@ -5,7 +5,7 @@ import pandas as pd
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "model.pkl")
+MODEL_PATH = os.path.join(BASE_DIR, "..", "ml", "model_store", "model.pkl")
 
 print("MODEL_PATH =", MODEL_PATH)
 print("EXISTS =", os.path.exists(MODEL_PATH))
