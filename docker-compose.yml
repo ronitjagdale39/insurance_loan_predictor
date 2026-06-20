@@ -3,7 +3,7 @@ version: "3.8"
 services:
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile.backend
     container_name: insurance_backend
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
@@ -13,10 +13,10 @@ services:
 
   frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile.frontend
     container_name: insurance_frontend
-    command: streamlit run app/frontend/frontend.py --server.address 0.0.0.0
+    command: streamlit run frontend.py --server.address 0.0.0.0
     ports:
       - "8501:8501"
     depends_on:
