@@ -9,6 +9,8 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
+    depends_on:
+      - db
     restart: unless-stopped
 
   frontend:
@@ -22,3 +24,23 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+
+  db:
+    image: postgres:16
+
+    container_name: insu_db
+
+    environment:
+
+      POSTGRES_USER: postgres
+
+      POSTGRES_PASSWORD: 1234
+
+      POSTGRES_DB: insu_premium
+    
+    ports:
+      - "5433:5432"
+
+    restart: unless-stopped
+
+    
