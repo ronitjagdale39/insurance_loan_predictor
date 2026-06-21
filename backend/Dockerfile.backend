@@ -6,7 +6,6 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY backend/app/ml/model_store/model.pkl /app/ml/model_store/
 
 COPY . .
 
