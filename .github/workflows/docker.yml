@@ -1,4 +1,4 @@
-name: Docker CI{continuous integration}
+name: Docker CI (Continuous Integration)
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Login to Docker Hub
@@ -19,20 +19,23 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Login Success
+      - name: Verify Docker Login
         run: echo "Docker Login Successful"
-      - name: Docker auto creating image
+
+      # Backend Image
+      - name: Build & Push Backend Image
         uses: docker/build-push-action@v4
         with:
           context: .
+          file: backend/Dockerfile.backend
           push: true
-          file: Dockerfile.frontend
-          tags: dockerronii/insurance_app:frontend
-      - name: Docker auto creating image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          file: Dockerfile.backend
           tags: dockerronii/insurance_app:backend
-          
+
+      # Frontend Image
+      - name: Build & Push Frontend Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: frontend/Dockerfile.frontend
+          push: true
+          tags: dockerronii/insurance_app:frontend
