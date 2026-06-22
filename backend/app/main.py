@@ -1,8 +1,16 @@
-from fastapi import FastAPI
+from sqlalchemy.orm import Session
+from fastapi import FastAPI,Depends
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.schemas.schema import UserInfo
 from app.services.prediction import predicted_output
+from app.db.database import engine,Base,get_db
+from app.models.user import User
+from app.schemas.users import UserCreate,UserResponse
+
+
+Base.metadata.create_all(bind=engine)
+
 app=FastAPI(title="Insurance premium predictor",version="1.0")
 app.add_middleware(
     CORSMiddleware,
@@ -36,3 +44,15 @@ def prediction(user:UserInfo) :
         return JSONResponse(status_code=200,content=prediction_out)
     except Exception as e:
         return JSONResponse(status_code=500,content=str(e))   
+@app.post('/create_user')
+def create_user(user:UserCreate,db:Session=Depends(get_db)):
+    users=User(
+        name=user.name,
+        email=user.email,
+        phone_no=user.phone_no
+    )
+    db.add(users)
+    db.commit()
+    db.refresh(users)
+    return users    
+    
