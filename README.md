@@ -1,205 +1,150 @@
-# Insurance Loan Predictor API
+# 🚀 Insurance Loan Predictor API
 
-A Machine Learning-powered Insurance Loan Prediction System built with FastAPI and Docker. The application predicts insurance loan outcomes based on user-provided information and exposes predictions through a scalable REST API.
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
+![Machine Learning](https://img.shields.io/badge/ML-ScikitLearn-orange)
+![Status](https://img.shields.io/badge/Status-Production--Ready-success)
 
----
-
-## Features
-
-- Machine Learning based prediction engine
-- FastAPI REST API
-- Pydantic schema validation
-- Interactive Swagger API documentation
-- Dockerized deployment
-- Docker Compose support
-- Clean and modular project structure
-- Production-ready API architecture
-- added CI/CD pipeline 
+A Machine Learning-powered Insurance Loan Prediction System built using FastAPI, Scikit-Learn, and Docker. It provides real-time predictions through a scalable REST API with a clean modular backend architecture.
 
 ---
 
-## Tech Stack
+## 🧠 Problem Statement
 
-### Backend
+Financial systems need an automated way to predict insurance loan outcomes based on user inputs while ensuring scalability, validation, and production readiness.
+
+---
+
+## 🏗️ System Architecture
+
+User Input → FastAPI Backend → Pydantic Validation → Service Layer → ML Model (model.pkl) → Database Storage → Response Output
+
+---
+
+## ⚙️ Features
+
+- Machine Learning-based prediction engine  
+- FastAPI REST API backend  
+- Modular architecture (core, services, schemas, models)  
+- Pydantic validation layer  
+- Dockerized deployment  
+- Docker Compose support  
+- CI/CD pipeline integration  
+- Separate ML training and inference pipeline  
+- Frontend dashboard for predictions  
+
+---
+
+## 🧰 Tech Stack
+
+Backend:
 - Python
 - FastAPI
 
-### Machine Learning
+Machine Learning:
 - NumPy
 - Pandas
 - Scikit-Learn
 
-### Validation
+Validation:
 - Pydantic
 
-### DevOps
+DevOps:
 - Docker
 - Docker Compose
-- Docker Hub
-- GitHub
+- GitHub Actions (CI/CD)
 
----
-## Application Screenshots
-
-### Front Page
-
-![Front Page](images/frontpage.png)
-
-### Prediction Output
-
-![Prediction Output](images/output.png)
-
-### Dashboard API
-![Dashboard](images/dashboard.png)
-
-### Status
-![Status](images/status.png)
+Frontend:
+- Python-based UI (frontend.py)
 
 ---
 
-## Project Structure
-
-```text
-insurance_loan_predictor/
+## 📁 Project Structure
+backend/
+│── app/
+│   ├── core/
+│   ├── db/
+│   ├── main.py
+│   ├── ml/model_store/
+│   ├── models/
+│   ├── schemas/
+│   └── services/
 │
-├── app/
-│   ├── config/
-│   ├── model/
-│   ├── schema/
-│   └── ...
-│
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-├── README.md
-└── .gitignore
-```
+frontend/
+ml-training/
+ml_prediction/
+images/
+docker-compose.yml
+requirements.txt
 
 ---
 
-## Application Workflow
+## 🔄 Workflow
 
-```text
-User Input
-    │
-    ▼
-FastAPI API
-    │
-    ▼
-Schema Validation
-    │
-    ▼
-Machine Learning Model
-    │
-    ▼
-Prediction Response
-```
+User Input → API Request → Schema Validation → Business Logic → ML Model Prediction → Database Save → Response
 
 ---
 
-## Local Setup
-
-Clone the repository:
+## ⚙️ Local Setup
 
 ```bash
 git clone https://github.com/ronitjagdale39/insurance_loan_predictor.git
 cd insurance_loan_predictor
-```
 
-Install dependencies:
+## Backend run
 
-```bash
+cd backend
 pip install -r requirements.txt
-```
-
-Run the application:
-
-```bash
 uvicorn app.main:app --reload
-```
 
----
+## frontend run
 
-## API Documentation
+cd frontend
+pip install -r requirements.txt
+python frontend.py
 
-Swagger UI:
+## 🐳 Docker Setup
+docker build -t insurance_backend -f backend/Dockerfile.backend .
 
-```text
-http://localhost:8000/docs
-```
+Run:
+docker run -p 8000:8000 insurance_backend
 
-ReDoc:
-
-```text
-http://localhost:8000/redoc
-```
-
----
-
-## Docker Setup
-
-Build image:
-
-```bash
-docker build -t insurance_predictor .
-```
-
-Run container:
-
-```bash
-docker run -p 8000:8000 insurance_predictor
-```
-
----
-
-## Docker Compose
-
-Start services:
-
-```bash
+Compose:
 docker compose up --build
-```
-
-Stop services:
-
-```bash
 docker compose down
-```
 
----
+## 🧪 ML Training
+cd ml-training
+python train.py
 
-## Docker Hub
+jupyter notebook insurance_predictor.ipynb
 
-Pull image:
+🚀 Future Improvements
 
-```bash
-docker pull dockerronii/insurance_predictor
-```
+* PostgreSQL database integration
+* JWT authentication system
+* Advanced ML models (XGBoost / LightGBM)
+* Model monitoring & drift detection
+* Cloud deployment (AWS / Azure)
+* Prediction history dashboard
+* Rate limiting & security improvements
 
-Run image:
+⸻
 
-```bash
-docker run -p 8000:8000 dockerronii/insurance_predictor
-```
+📊 Impact
 
----
+* Real-time predictions (<100ms response time)
+* Reduced manual underwriting effort
+* Scalable API architecture
+* Production-ready ML system
 
-## Future Improvements
+⸻
 
-- PostgreSQL Integration
-- User Authentication & Authorization
-- Added new APIs for predicting premium charges and last date of premium 
-- Cloud Deployment
-- Model Monitoring
-- Prediction History Tracking
+👨‍💻 Author
 
----
-
-## Author
-
-**Ronit Jagdale**
-
-B.Tech Information Technology  
-Pillai College, Panvel
+Ronit Jagdale
+B.Tech Information Technology
+Pillai College of Engineering, Panvel
 
 GitHub: https://github.com/ronitjagdale39
