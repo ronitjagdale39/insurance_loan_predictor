@@ -1,13 +1,16 @@
+from app.models import user
 from sqlalchemy.orm import Session
 from fastapi import FastAPI,Depends
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.schemas.schema import UserInfo
-from app.services.prediction import predicted_output
+from app.services.risk_prediction import predicted_output
 from app.db.database import engine,Base,get_db
 from app.models.user import User
+from app.services.premium_pred import pred
 from app.schemas.users import UserCreate,UserResponse
-
+from app.models.predictions import Prediction
+from app.schemas.predictions import PredictionCreate,PredictionResponse
 
 Base.metadata.create_all(bind=engine)
 
@@ -55,4 +58,59 @@ def create_user(user:UserCreate,db:Session=Depends(get_db)):
     db.commit()
     db.refresh(users)
     return users    
+@app.post(
+    "/predict-premium",
+    response_model=PredictionResponse
+)
+def predict_premium_endpoint(user_id:int,data:PredictionCreate,db:Session=Depends(get_db)):
+    premium = float(pred(data)['premium_charges'])
+
+    risk_score = int(min(100, premium / 1000))
     
+
+    if risk_score < 30:
+
+        risk_level = "LOW"
+
+    elif risk_score < 70:
+
+        risk_level = "MEDIUM"
+
+    else:
+
+        risk_level = "HIGH"
+
+    validity_years = 5
+    db_entry = Prediction(
+
+        premium=premium,
+        user_id=user_id,
+
+        risk_score=risk_score,
+
+        risk_level=risk_level,
+
+        validity_years=validity_years
+
+    )
+
+    db.add(db_entry)
+
+    db.commit()
+
+    db.refresh(db_entry)
+
+
+    return PredictionResponse(
+
+        id=db_entry.id,
+
+        premium=premium,
+
+        risk_score=risk_score,
+
+        risk_level=risk_level,
+
+        validity_years=validity_years
+
+    )
