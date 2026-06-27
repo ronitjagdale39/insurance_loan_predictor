@@ -7,14 +7,15 @@ from app.schemas.schema import UserInfo
 from app.services.risk_prediction import predicted_output
 from app.db.database import engine,Base,get_db
 from app.models.user import User
+from app.auth.login import get_current_user
 from app.services.premium_pred import pred
 from app.schemas.users import UserCreate,UserResponse
 from app.models.predictions import Prediction
 from app.schemas.predictions import PredictionCreate,PredictionResponse
-
+from app.auth.login import router as auth_router
 Base.metadata.create_all(bind=engine)
-
 app=FastAPI(title="Insurance premium predictor",version="1.0")
+app.include_router(auth_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -48,7 +49,7 @@ def prediction(user:UserInfo) :
     except Exception as e:
         return JSONResponse(status_code=500,content=str(e))   
 @app.post('/create_user')
-def create_user(user:UserCreate,db:Session=Depends(get_db)):
+def create_user(user:UserCreate,db:Session=Depends(get_db),current_user=Depends(get_current_user)):
     users=User(
         name=user.name,
         email=user.email,
