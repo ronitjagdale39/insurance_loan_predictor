@@ -11,3 +11,8 @@ fastapi
 sqlalchemy
 psycopg2-binary==2.9.10
 pydantic[email]
+passlib[bcrypt]
+python-jose[cryptography]
+PyJWT
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
