@@ -7,12 +7,13 @@ from app.schemas.schema import UserInfo
 from app.services.risk_prediction import predicted_output
 from app.db.database import engine,Base,get_db
 from app.models.user import User
-from app.auth.login import get_current_user
+from app.auth.dependencies import get_current_user
 from app.services.premium_pred import pred
 from app.schemas.users import UserCreate,UserResponse
 from app.models.predictions import Prediction
 from app.schemas.predictions import PredictionCreate,PredictionResponse
 from app.auth.login import router as auth_router
+from app.auth.dependencies import role_required
 Base.metadata.create_all(bind=engine)
 app=FastAPI(title="Insurance premium predictor",version="1.0")
 app.include_router(auth_router)
@@ -34,7 +35,7 @@ def status():
         'status':'OK'
     }
 @app.post('/prediction')    
-def prediction(user:UserInfo) :
+def prediction(user:UserInfo,) :
     input_info={
         'bmi':user.bmi,
         'age_group':user.age_group,
@@ -48,12 +49,13 @@ def prediction(user:UserInfo) :
         return JSONResponse(status_code=200,content=prediction_out)
     except Exception as e:
         return JSONResponse(status_code=500,content=str(e))   
-@app.post('/create_user')
-def create_user(user:UserCreate,db:Session=Depends(get_db),current_user=Depends(get_current_user)):
+@app.post('/create_user',response_model=UserCreate)
+def create_user(user:UserCreate,db:Session=Depends(get_db),current_user=Depends(role_required(["admin"]))):
     users=User(
         name=user.name,
         email=user.email,
-        phone_no=user.phone_no
+        phone_no=user.phone_no,
+        role=user.role or "users"
     )
     db.add(users)
     db.commit()
