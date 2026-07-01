@@ -1,12 +1,8 @@
 from passlib.context import CryptContext
+from fastapi import Depends
 from jose import jwt
 from datetime import datetime, timedelta
-
-SECRET_KEY = "YOUR_SECRET_KEY"
-
-ALGORITHM = "HS256"
-
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+from app.core.config import settings
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
@@ -24,7 +20,7 @@ def create_access_token(data: dict):
     payload = data.copy()
 
     expire = datetime.utcnow() + timedelta(
-        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
     )
 
     payload.update(
@@ -33,6 +29,6 @@ def create_access_token(data: dict):
 
     return jwt.encode(
         payload,
-        SECRET_KEY,
-        algorithm=ALGORITHM
+        settings.SECRET_KEY,
+        algorithm=settings.ALGORITHM
     )
