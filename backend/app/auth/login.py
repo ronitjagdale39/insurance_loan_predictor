@@ -8,11 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 Oauth2_scheme=OAuth2PasswordBearer(tokenUrl="/auth/login")
-SECRET_KEY = "YOUR_SECRET_KEY"
 
-ALGORITHM = "HS256"
-
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
 router = APIRouter(prefix="/auth",tags=["auth"])
 @router.post("/check")
 def status():
@@ -79,17 +75,3 @@ def login(
         "access_token": access_token,
         "token_type": "bearer"
     }
-def get_current_user(token:str=Depends(Oauth2_scheme),db:Session=Depends(get_db)):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-
-        user_id = payload.get("sub")
-        if user_id is None:
-
-            raise HTTPException(status_code=401, detail="Invalid token")
-
-        return user_id
-
-    except JWTError:
-
-        raise HTTPException(status_code=401, detail="Token expired or invalid")

@@ -1,8 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker,declarative_base
-
-URL='postgresql://postgres:1234@db:5432/insu_premium'
-engine=create_engine(URL)
+from app.core.config import settings
+engine=create_engine(settings.DATABASE_URL)
 sessionLocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)
 Base=declarative_base()
 def get_db():
