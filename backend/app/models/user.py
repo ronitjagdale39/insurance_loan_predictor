@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime,Boolean
 from datetime import datetime
 from app.db.database import Base
 
@@ -28,7 +28,11 @@ class User(Base):
         default="customer",
 
         nullable=False
-
     )
 
     created_at = Column(DateTime, default=datetime.utcnow)
+    is_first_login = Column(
+        Boolean,
+        default=True,
+        nullable=False
+    )
