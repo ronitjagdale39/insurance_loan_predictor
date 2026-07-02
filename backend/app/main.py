@@ -49,7 +49,7 @@ def prediction(user:UserInfo,) :
         return JSONResponse(status_code=200,content=prediction_out)
     except Exception as e:
         return JSONResponse(status_code=500,content=str(e))   
-@app.post('/create_user',response_model=UserCreate)
+@app.post('/create_user',response_model=UserResponse)
 def create_user(user:UserCreate,db:Session=Depends(get_db),current_user=Depends(role_required(["admin"]))):
     users=User(
         name=user.name,
