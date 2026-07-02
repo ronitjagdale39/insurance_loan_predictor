@@ -74,7 +74,7 @@ pipeline.fit(X_train, y_train)
 
 # Save the trained model to model.pkl
 # Note: Usually we output to backend/app/ml/model_store/model.pkl
-model_output_path = os.path.join(BASE_DIR, '..', 'backend', 'app', 'ml', 'model_store', 'model.pkl')
+model_output_path = os.path.join(BASE_DIR, '..', 'backend', 'app', 'ml', 'models', 'model.pkl')
 with open(model_output_path, 'wb') as f:
     pickle.dump(pipeline, f)
 
