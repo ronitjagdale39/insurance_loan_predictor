@@ -66,7 +66,7 @@ backend/
 │   ├── core/
 │   ├── db/
 │   ├── main.py
-│   ├── ml/model_store/
+│   ├── ml/models/
 │   ├── models/
 │   ├── schemas/
 │   └── services/
