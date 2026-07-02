@@ -65,7 +65,6 @@ def login(
             status_code=401,
             detail="Invalid credentials"
         )
-
     access_token = create_access_token(
         {
             "sub": str(db_user.id),
@@ -76,5 +75,6 @@ def login(
 
     return {
         "access_token": access_token,
-        "token_type": "bearer"
+        "token_type": "bearer",
+        "must_change_password":db_user.is_first_login
     }
