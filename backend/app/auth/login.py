@@ -7,6 +7,7 @@ from jose import jwt,JWTError
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordRequestForm
 Oauth2_scheme=OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 router = APIRouter(prefix="/auth",tags=["auth"])
@@ -40,12 +41,14 @@ def signup(user:SignupRequest,db:Session=Depends(get_db)):
 
 @router.post("/login")
 def login(
-    user: LoginRequest,
+    form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
 ):
+    username = form_data.username
+    password = form_data.password
 
     db_user = db.query(User).filter(
-        User.email == user.email
+        User.name == username
     ).first()
 
     if not db_user:
@@ -55,7 +58,7 @@ def login(
         )
 
     if not verify_password(
-        user.password,
+        password,
         db_user.hashed_password
     ):
         raise HTTPException(
