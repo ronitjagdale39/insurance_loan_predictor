@@ -24,9 +24,24 @@ def create_access_token(data: dict):
     )
 
     payload.update(
-        {"exp": expire}
+        {"exp": expire,
+        "type":"access_token"}
     )
 
+    return jwt.encode(
+        payload,
+        settings.SECRET_KEY,
+        algorithm=settings.ALGORITHM
+    )
+def create_refresh_token(data:dict):
+    payload=data.copy()
+    expire=datetime.utcnow()+timedelta(
+        minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES
+    )
+    payload.update({
+        "exp":expire,
+        "type":"refresh_token"
+    })
     return jwt.encode(
         payload,
         settings.SECRET_KEY,
