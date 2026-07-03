@@ -2,7 +2,7 @@ from fastapi import status
 from app.schemas.auth import LoginRequest,SignupRequest
 from app.models.user import User
 from app.db.database import get_db
-from app.core.security import verify_password,create_access_token,hashed_password
+from app.core.security import verify_password,create_access_token,hashed_password,create_refresh_token
 from jose import jwt,JWTError
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -72,9 +72,15 @@ def login(
             "role": db_user.role
         }
     )
+    refresh_token=create_refresh_token(
+            {"sub": str(db_user.id),
+            "email": db_user.email}
+    )
 
     return {
+        "userrole":db_user.role,
         "access_token": access_token,
+        "refresh_token":refresh_token,
         "token_type": "bearer",
         "must_change_password":db_user.is_first_login
     }

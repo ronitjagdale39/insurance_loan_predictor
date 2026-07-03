@@ -20,7 +20,6 @@ def get_current_user(token:str=Depends(Oauth2_scheme),db:Session=Depends(get_db)
         return user
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
-
 def role_required(allowed_roles: list):
     def wrapper(current_user:User=Depends(get_current_user)):
         if current_user.role not in allowed_roles:
