@@ -6,7 +6,7 @@ from app.core.security import create_access_token,create_refresh_token
 from app.core.config import settings
 from app.models.user import User
 from app.db.database import get_db
-router=APIRouter()
+router=APIRouter(prefix="/auth",tags=["auth"])
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
 @router.post('/refresh')
