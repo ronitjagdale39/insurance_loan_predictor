@@ -7,6 +7,7 @@ from app.schemas.schema import UserInfo
 from app.services.risk_prediction import predicted_output
 from app.db.database import engine,Base,get_db
 from app.models.user import User
+from app.core.security import hashed_password
 from app.auth.dependencies import get_current_user
 from app.services.premium_pred import pred
 from app.schemas.users import UserCreate,UserResponse
@@ -14,9 +15,15 @@ from app.models.predictions import Prediction
 from app.schemas.predictions import PredictionCreate,PredictionResponse
 from app.auth.login import router as auth_router
 from app.auth.dependencies import role_required
+from app.routers.refresh import router as refresh_router
+from app.routers.logout import router as logout_router
+from app.routers.chnge_pass import router as change_pass_router
 Base.metadata.create_all(bind=engine)
 app=FastAPI(title="Insurance premium predictor",version="1.0")
 app.include_router(auth_router)
+app.include_router(change_pass_router)
+app.include_router(logout_router)
+app.include_router(refresh_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -35,7 +42,7 @@ def status():
         'status':'OK'
     }
 @app.post('/prediction')    
-def prediction(user:UserInfo,) :
+def prediction(user:UserInfo,current_user=Depends(role_required(["admin","agent","customers"]))) :
     input_info={
         'bmi':user.bmi,
         'age_group':user.age_group,
@@ -51,69 +58,45 @@ def prediction(user:UserInfo,) :
         return JSONResponse(status_code=500,content=str(e))   
 @app.post('/create_user',response_model=UserResponse)
 def create_user(user:UserCreate,db:Session=Depends(get_db),current_user=Depends(role_required(["admin"]))):
-    users=User(
-        name=user.name,
-        email=user.email,
-        phone_no=user.phone_no,
-        role=user.role or "users"
+    users = User(
+    name=user.name,
+    email=user.email,
+    phone_no=user.phone_no,
+    hashed_password=hashed_password(user.password),
+    role=user.role
     )
     db.add(users)
     db.commit()
     db.refresh(users)
     return users    
-@app.post(
-    "/predict-premium",
-    response_model=PredictionResponse
-)
-def predict_premium_endpoint(user_id:int,data:PredictionCreate,db:Session=Depends(get_db)):
+@app.post("/predict-premium", response_model=PredictionResponse)
+def predict_premium_endpoint(
+    data: PredictionCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(role_required(['admin','agent','customer']))
+):
+
     premium = float(pred(data)['premium_charges'])
 
     risk_score = int(min(100, premium / 1000))
-    
 
     if risk_score < 30:
-
         risk_level = "LOW"
-
     elif risk_score < 70:
-
         risk_level = "MEDIUM"
-
     else:
-
         risk_level = "HIGH"
 
-    validity_years = 5
     db_entry = Prediction(
-
         premium=premium,
-        user_id=user_id,
-
+        user_id=current_user.id,  
         risk_score=risk_score,
-
         risk_level=risk_level,
-
-        validity_years=validity_years
-
+        validity_years=5
     )
 
     db.add(db_entry)
-
     db.commit()
-
     db.refresh(db_entry)
 
-
-    return PredictionResponse(
-
-        id=db_entry.id,
-
-        premium=premium,
-
-        risk_score=risk_score,
-
-        risk_level=risk_level,
-
-        validity_years=validity_years
-
-    )
+    return db_entry
