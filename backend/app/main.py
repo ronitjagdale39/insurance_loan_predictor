@@ -10,6 +10,7 @@ from app.models.user import User
 from app.core.security import hashed_password
 from app.auth.dependencies import get_current_user
 from app.services.premium_pred import pred
+from app.routers.verify_email import router as email_router
 from app.schemas.users import UserCreate,UserResponse
 from app.models.predictions import Prediction
 from app.schemas.predictions import PredictionCreate,PredictionResponse
@@ -24,6 +25,7 @@ app.include_router(auth_router)
 app.include_router(change_pass_router)
 app.include_router(logout_router)
 app.include_router(refresh_router)
+app.include_router(email_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
