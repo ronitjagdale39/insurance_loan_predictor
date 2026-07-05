@@ -11,3 +11,5 @@ class SignupRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+class TokenRequest(BaseModel):
+    token:str

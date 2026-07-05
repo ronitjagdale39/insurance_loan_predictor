@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime,Boolean
 from datetime import datetime
 from app.db.database import Base
+from sqlalchemy.orm import relationship
 
 
 class User(Base):
@@ -36,3 +37,13 @@ class User(Base):
         default=True,
         nullable=False
     )
+    is_verified=Column(
+        Boolean,
+        default=False,
+        nullable=False
+    )
+    tokens = relationship(
+    "UserToken",
+    back_populates="user",
+    cascade="all, delete-orphan"
+)
