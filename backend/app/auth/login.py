@@ -40,7 +40,7 @@ def signup(user:SignupRequest,db:Session=Depends(get_db)):
     # after adding the user we will be sending email verification to the user ...
     # here we are generating secure token for email verification
     token=generate_secure_token()
-    hash_token=hashed_password(token)
+    hash_token=hashed_refresh_token(token)
     db_token=UserToken(
         user_id=new_user.id,
         token_hash=hash_token,

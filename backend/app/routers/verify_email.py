@@ -7,9 +7,9 @@ from datetime import datetime
 from app.models.user_token import UserToken
 from app.core.security import hashed_refresh_token
 router=APIRouter(prefix="/auth")
-@router.post('/verify_email')
-def verify_email(token:TokenRequest,db:Session=Depends(get_db)):
-    hashed_token=hashed_refresh_token(token.token)
+@router.get('/verify_email')
+def verify_email(token:str,db:Session=Depends(get_db)):
+    hashed_token=hashed_refresh_token(token)
     db_verify=db.query(UserToken).filter(UserToken.token_hash==hashed_token,UserToken.token_type=="email_verification",UserToken.expires_at>datetime.utcnow(),UserToken.used==False).first()
     if not db_verify:
         raise HTTPException(status_code=400,detail="invalid or expired verification token")
