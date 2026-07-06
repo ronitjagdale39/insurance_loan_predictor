@@ -307,8 +307,8 @@ This project is licensed under the MIT License.
 
 Backend Developer | Machine Learning Enthusiast
 
-- GitHub: https://github.com/yourusername
-- LinkedIn: https://linkedin.com/in/yourprofile
+- GitHub: https://github.com/ronitjagdale39
+- LinkedIn: https://linkedin.com/in/ronitjagdale39
 
 ---
 
