@@ -1,150 +1,315 @@
-# 🚀 Insurance Loan Predictor API
+# 🛡️ Insurance Intelligence Platform
 
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
-![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
-![Machine Learning](https://img.shields.io/badge/ML-ScikitLearn-orange)
-![Status](https://img.shields.io/badge/Status-Production--Ready-success)
+An end-to-end **AI-powered Insurance Premium Prediction Platform** built with **FastAPI**, **PostgreSQL**, **Docker**, and **Machine Learning**.
 
-A Machine Learning-powered Insurance Loan Prediction System built using FastAPI, Scikit-Learn, and Docker. It provides real-time predictions through a scalable REST API with a clean modular backend architecture.
+This project predicts insurance premiums using ML models while providing a secure, production-ready backend with JWT authentication, email verification, refresh tokens, and modern REST APIs.
 
 ---
 
-## 🧠 Problem Statement
+## 🚀 Features
 
-Financial systems need an automated way to predict insurance loan outcomes based on user inputs while ensuring scalability, validation, and production readiness.
+### 🔐 Authentication
 
----
-
-## 🏗️ System Architecture
-
-User Input → FastAPI Backend → Pydantic Validation → Service Layer → ML Model (model.pkl) → Database Storage → Response Output
-
----
-
-## ⚙️ Features
-
-- Machine Learning-based prediction engine  
-- FastAPI REST API backend  
-- Modular architecture (core, services, schemas, models)  
-- Pydantic validation layer  
-- Dockerized deployment  
-- Docker Compose support  
-- CI/CD pipeline integration  
-- Separate ML training and inference pipeline  
-- Frontend dashboard for predictions  
+- User Registration
+- JWT Authentication
+- Refresh Token Authentication
+- Secure Logout
+- Change Password
+- Email Verification
+- Forgot Password *(Coming Soon)*
+- Reset Password *(Coming Soon)*
 
 ---
 
-## 🧰 Tech Stack
+### 🤖 AI Prediction
 
-Backend:
-- Python
-- FastAPI
+- Predict Insurance Premium
+- ML Model Integration
+- Input Validation
+- Prediction APIs
 
-Machine Learning:
-- NumPy
-- Pandas
-- Scikit-Learn
+---
 
-Validation:
-- Pydantic
+### 👤 User Management
 
-DevOps:
+- Secure Authentication
+- Email Verification
+- Role-based User System
+- User Profile
+
+---
+
+### 🗄️ Database
+
+- PostgreSQL
+- SQLAlchemy ORM
+- Alembic Migrations
+- Foreign Key Relationships
+
+---
+
+### 🛡️ Security
+
+- Password Hashing (bcrypt)
+- SHA-256 Token Hashing
+- JWT Access Tokens
+- Refresh Tokens
+- Secure Email Verification
+- One-Time Verification Tokens
+- Token Expiration
+
+---
+
+### 🐳 DevOps
+
 - Docker
 - Docker Compose
-- GitHub Actions (CI/CD)
-
-Frontend:
-- Python-based UI (frontend.py)
+- Environment Variables
+- Production Ready Structure
 
 ---
 
-## 📁 Project Structure
-backend/
-│── app/
-│   ├── core/
-│   ├── db/
-│   ├── main.py
-│   ├── ml/models/
-│   ├── models/
-│   ├── schemas/
-│   └── services/
+## 🏗️ Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Backend | FastAPI |
+| Language | Python |
+| Database | PostgreSQL |
+| ORM | SQLAlchemy |
+| Authentication | JWT |
+| Password Hashing | bcrypt |
+| Token Hashing | SHA-256 |
+| ML | Scikit-learn |
+| Validation | Pydantic |
+| Containerization | Docker |
+| API Docs | Swagger UI |
+
+---
+
+# 📂 Project Structure
+
+```text
+app/
 │
-frontend/
-ml-training/
-ml_prediction/
-images/
-docker-compose.yml
-requirements.txt
+├── auth/
+├── core/
+├── db/
+├── models/
+├── routers/
+├── schemas/
+├── services/
+├── scheduler/
+├── utils/
+└── main.py
+```
 
 ---
 
-## 🔄 Workflow
+# ⚙️ Installation
 
-User Input → API Request → Schema Validation → Business Logic → ML Model Prediction → Database Save → Response
-
----
-
-## ⚙️ Local Setup
+## Clone Repository
 
 ```bash
-git clone https://github.com/ronitjagdale39/insurance_loan_predictor.git
-cd insurance_loan_predictor
+git clone https://github.com/yourusername/insurance-intelligence-platform.git
 
-## Backend run
+cd insurance-intelligence-platform
+```
 
-cd backend
+---
+
+## Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Activate
+
+### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+### Linux / Mac
+
+```bash
+source venv/bin/activate
+```
+
+---
+
+## Install Dependencies
+
+```bash
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+```
 
-## frontend run
+---
 
-cd frontend
-pip install -r requirements.txt
-python frontend.py
+## Configure Environment Variables
 
-## 🐳 Docker Setup
-docker build -t insurance_backend -f backend/Dockerfile.backend .
+Create
 
-Run:
-docker run -p 8000:8000 insurance_backend
+```text
+.env
+```
 
-Compose:
+Example
+
+```env
+DATABASE_URL=
+
+SECRET_KEY=
+
+ALGORITHM=
+
+ACCESS_TOKEN_EXPIRE_MINUTES=
+
+REFRESH_TOKEN_EXPIRE_MINUTES=
+
+EMAIL_USER=
+
+EMAIL_PASSWORD=
+
+EMAIL_FROM=
+
+EMAIL_HOST=
+
+EMAIL_PORT=
+```
+
+---
+
+## Run Docker
+
+```bash
 docker compose up --build
-docker compose down
+```
 
-## 🧪 ML Training
-cd ml-training
-python train.py
+---
 
-jupyter notebook insurance_predictor.ipynb
+## Run FastAPI
 
-🚀 Future Improvements
+```bash
+uvicorn app.main:app --reload
+```
 
-* PostgreSQL database integration
-* JWT authentication system
-* Advanced ML models (XGBoost / LightGBM)
-* Model monitoring & drift detection
-* Cloud deployment (AWS / Azure)
-* Prediction history dashboard
-* Rate limiting & security improvements
+---
 
-⸻
+# 📖 API Documentation
 
-📊 Impact
+Swagger
 
-* Real-time predictions (<100ms response time)
-* Reduced manual underwriting effort
-* Scalable API architecture
-* Production-ready ML system
+```
+http://localhost:8000/docs
+```
 
-⸻
+ReDoc
 
-👨‍💻 Author
+```
+http://localhost:8000/redoc
+```
 
-Ronit Jagdale
-B.Tech Information Technology
-Pillai College of Engineering, Panvel
+---
 
-GitHub: https://github.com/ronitjagdale39
+# 🔐 Authentication Flow
+
+```text
+Signup
+      │
+      ▼
+Email Verification
+      │
+      ▼
+Login
+      │
+      ▼
+Access Token
+      │
+      ▼
+Refresh Token
+      │
+      ▼
+Protected APIs
+```
+
+---
+
+# 🤖 Prediction Flow
+
+```text
+User Input
+      │
+      ▼
+Validation
+      │
+      ▼
+ML Model
+      │
+      ▼
+Premium Prediction
+      │
+      ▼
+Database
+```
+
+---
+
+# 🚧 Upcoming Features
+
+- Forgot Password
+- Reset Password
+- Prediction History
+- User Dashboard
+- Prediction Analytics
+- Admin Dashboard
+- PDF Reports
+- Docker Deployment
+- CI/CD
+- Unit Testing
+- Redis
+- Background Tasks
+
+---
+
+# 📈 Future Improvements
+
+- Explainable AI (Feature Importance)
+- Recommendation Engine
+- Insurance Risk Analysis
+- AI Chatbot
+- Role Based Access Control
+- Rate Limiting
+- Monitoring
+- Cloud Deployment
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+Feel free to fork the repository and submit a Pull Request.
+
+---
+
+# 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Author
+
+**Ronit Jagdale**
+
+Backend Developer | Machine Learning Enthusiast
+
+- GitHub: https://github.com/yourusername
+- LinkedIn: https://linkedin.com/in/yourprofile
+
+---
+
+⭐ If you found this project useful, don't forget to star the repository.
