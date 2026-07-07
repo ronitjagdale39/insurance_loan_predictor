@@ -19,9 +19,13 @@ from app.auth.dependencies import role_required
 from app.routers.refresh import router as refresh_router
 from app.routers.logout import router as logout_router
 from app.routers.chnge_pass import router as change_pass_router
+from app.routers.reset_password import router as reset_password_router
+from app.routers.forgot_password import router as forgot_password_router
 Base.metadata.create_all(bind=engine)
 app=FastAPI(title="Insurance premium predictor",version="1.0")
 app.include_router(auth_router)
+app.include_router(reset_password_router)
+app.include_router(forgot_password_router)
 app.include_router(change_pass_router)
 app.include_router(logout_router)
 app.include_router(refresh_router)
