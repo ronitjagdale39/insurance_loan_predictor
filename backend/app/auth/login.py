@@ -12,7 +12,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.models.refresh_token import RefreshToken
 from datetime import datetime, timedelta
 from app.core.config import settings
-from app.services.email_verify import sent_verification_email
+from app.services.email_verify import send_verification_email
 Oauth2_scheme=OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 router = APIRouter(prefix="/auth",tags=["auth"])
@@ -50,7 +50,7 @@ def signup(user:SignupRequest,db:Session=Depends(get_db)):
     db.add(db_token)
     db.commit()
     db.refresh(db_token)
-    sent_verification_email(new_user.email,token)
+    send_verification_email(new_user.email,token)
     
     return {
         "id": new_user.id,
