@@ -81,14 +81,31 @@ def predict_premium_endpoint(
     db: Session = Depends(get_db),
     current_user: User = Depends(role_required(['admin','agent','customer']))
 ):
+    prediction=pred(data)
+    print(f"prediction=={prediction}")
+    premium = float(prediction['premium_charges'])
+    explaination=prediction['explaination']
 
-    premium = float(pred(data)['premium_charges'])
+    risk_score = 0
 
-    risk_score = int(min(100, premium / 1000))
+    if data.age > 50:
+        risk_score += 20
 
-    if risk_score < 30:
+    if data.bmi > 30:
+        risk_score += 20
+
+    if data.smoker == "yes":
+        risk_score += 40
+
+    if data.children > 3:
+        risk_score += 10
+
+    if data.region == "high_cost_region":
+        risk_score += 10
+
+    if risk_score <= 30:
         risk_level = "LOW"
-    elif risk_score < 70:
+    elif risk_score <= 60:
         risk_level = "MEDIUM"
     else:
         risk_level = "HIGH"
@@ -98,11 +115,19 @@ def predict_premium_endpoint(
         user_id=current_user.id,  
         risk_score=risk_score,
         risk_level=risk_level,
-        validity_years=5
+        validity_years=5,
+
     )
 
     db.add(db_entry)
     db.commit()
     db.refresh(db_entry)
 
-    return db_entry
+    return PredictionResponse(
+        premium=premium,
+        id=db_entry.id,
+        risk_score=risk_score,
+        risk_level=risk_level,
+        validity_years=5,
+        explanation=explaination
+    )
