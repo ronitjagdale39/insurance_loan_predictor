@@ -13,3 +13,8 @@ class LoginRequest(BaseModel):
     password: str
 class TokenRequest(BaseModel):
     token:str
+class ForgotPassword(BaseModel):
+    email:str
+class ResetPassword(BaseModel):
+    token:str
+    new_password:str

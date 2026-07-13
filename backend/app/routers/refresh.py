@@ -1,8 +1,9 @@
-from requests import Session
+from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from jose import jwt ,JWTError
-from app.core.security import create_access_token,create_refresh_token
+from app.core.security import create_access_token,create_refresh_token,hashed_refresh_token
+from app.models.refresh_token import RefreshToken
 from app.core.config import settings
 from app.models.user import User
 from app.db.database import get_db
@@ -17,6 +18,10 @@ def refresh(request:RefreshTokenRequest,db:Session=Depends(get_db)):
             settings.SECRET_KEY,
             algorithms=[settings.ALGORITHM]
         )
+        hashed_rt=hashed_refresh_token(request.refresh_token)
+        db_rt=db.query(RefreshToken).filter(RefreshToken.token_hash==hashed_rt).first()
+        if not db_rt:
+            raise HTTPException(status_code=401,detail="Invalid token")
         token_type=payload.get('type')
         if token_type!='refresh_token':
             raise HTTPException(status_code=401,detail="Invalid token type")
@@ -28,7 +33,8 @@ def refresh(request:RefreshTokenRequest,db:Session=Depends(get_db)):
             raise HTTPException(status_code=401,detail="Invalid details")
         new_access_token=create_access_token({"sub":str(user.id),"email":user.email,"role":user.role})
         return {
-            "access_token":new_access_token
+            "access_token":new_access_token,
+            'type':'bearer'
         }
     except JWTError:
         raise HTTPException(status_code=401,detail="Invalid token")
