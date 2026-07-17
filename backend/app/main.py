@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import FastAPI,Depends
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from app.models import audit
 from app.schemas.schema import UserInfo
 from app.services.risk_prediction import predicted_output
 from app.db.database import engine,Base,get_db
