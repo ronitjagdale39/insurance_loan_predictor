@@ -1,5 +1,7 @@
 from fastapi import status
 from app.schemas.auth import LoginRequest,SignupRequest
+from fastapi import Request
+from app.services.audit_log import AuditService
 from app.models.user import User
 from app.models.user_token import UserToken
 from app.db.database import get_db
@@ -23,10 +25,26 @@ def status():
         "version":"1.0"
     }
 @router.post("/signup")
-def signup(user:SignupRequest,db:Session=Depends(get_db)):
+def signup(request:Request,user:SignupRequest,db:Session=Depends(get_db)):
     db_existing_user=db.query(User).filter(User.email==user.email).first()
     if db_existing_user:
-        raise HTTPException(status_code=400,detail="user already exists")
+        AuditService.log(
+    db=db,
+    event="USER_SIGN_UP",
+    level="WARNING",
+    user_id=None,
+    email=db_existing_user.email,
+    endpoint="/auth/signup",
+    method="POST",
+    status_code=400,
+    ip_address=request.client.host if request.client else None,
+    message="user already exists",
+    payload={
+        "reason":"email_id already exits",
+        'signup_type':'email',
+    }
+)
+        raise HTTPException(status_code=400,detail="email_id  already exists")
     new_user=User(
         name=user.name,
         email=user.email,
@@ -51,6 +69,22 @@ def signup(user:SignupRequest,db:Session=Depends(get_db)):
     db.commit()
     db.refresh(db_token)
     send_verification_email(new_user.email,token)
+    AuditService.log(
+    db=db,
+    event="USER_SIGN_UP",
+    level="INFO",
+    user_id=new_user.id,
+    email=new_user.email,
+    endpoint=request.url.path,
+    method=request.method,
+    status_code=200,
+    ip_address=request.client.host if request.client else None,
+    message="User created successfully",
+    payload={
+        'username':user.name,
+        "role": new_user.role
+    }
+)
     
     return {
         "id": new_user.id,
@@ -61,8 +95,9 @@ def signup(user:SignupRequest,db:Session=Depends(get_db)):
 
 @router.post("/login")
 def login(
+    request: Request,
     form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     username = form_data.username
     password = form_data.password
@@ -72,6 +107,22 @@ def login(
     ).first()
 
     if not db_user:
+        AuditService.log(
+            db=db,
+            event="USER_LOGIN",
+            level="WARNING",
+            user_id=None,
+            email=username,
+            endpoint=request.url.path,
+            method=request.method,
+            status_code=404,
+            ip_address=request.client.host if request.client else None,
+            message="User not found",
+            payload={
+                'reason':'User not found',
+                'login_type':'username'
+            }
+        )
         raise HTTPException(
             status_code=404,
             detail="User not found"
@@ -81,6 +132,22 @@ def login(
         password,
         db_user.hashed_password
     ):
+        AuditService.log(
+            db=db,
+            event="USER_LOGIN",
+            level="WARNING",
+            user_id=db_user.id,
+            email=db_user.email,
+            endpoint=request.url.path,
+            method=request.method,
+            status_code=401,
+            ip_address=request.client.host if request.client else None,
+            message="Invalid credentials",
+            payload={
+                'reason':'Invalid Credentials',
+                'login_type':'password'
+            }
+        )
         raise HTTPException(
             status_code=401,
             detail="Invalid credentials"
@@ -105,6 +172,22 @@ def login(
     db.add(db_rt)
     db.commit()
     db.refresh(db_rt)
+    
+    AuditService.log(
+    db=db,
+    event="USER_LOGIN",
+    level="INFO",
+    user_id=db_user.id,
+    email=db_user.email,
+    endpoint=request.url.path,
+    method=request.method,
+    status_code=200,
+    ip_address=request.client.host if request.client else None,
+    message="User logged in successfully",
+    payload={
+        "role": db_user.role
+    }
+)
 
     return {
         "userrole":db_user.role,
