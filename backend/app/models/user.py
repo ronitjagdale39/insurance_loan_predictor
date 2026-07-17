@@ -47,3 +47,4 @@ class User(Base):
     back_populates="user",
     cascade="all, delete-orphan"
 )
+    audit_log=relationship("AuditTable",back_populates="user")
