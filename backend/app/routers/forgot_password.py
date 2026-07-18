@@ -1,4 +1,6 @@
 from fastapi import Depends,APIRouter,HTTPException
+from fastapi import Request
+from app.services.audit_log import AuditService
 from datetime import datetime,timedelta
 from sqlalchemy.orm import Session
 from app.core.config import settings
@@ -10,13 +12,42 @@ from app.models.user_token import UserToken
 from app.models.user import User
 router=APIRouter(prefix="/auth",tags=["auth"])
 @router.post("/forgot-password")
-def forgot_password(user:ForgotPassword,db:Session=Depends(get_db)):
+def forgot_password(request:Request,user:ForgotPassword,db:Session=Depends(get_db)):
     db_user=db.query(User).filter(User.email==user.email).first()
     if not db_user:
-        return {
+        AuditService.log(
+            db=db,
+            event="RESET_PASSWORD",
+    level="WARNING",
+    user_id=None,
+    email=None,
+    endpoint=request.url.path,
+    method=request.method,
+    status_code=401,
+    ip_address=request.client.host if request.client else None,
+    message="User doesnt exists",
+    payload={
+        "reason":"User doesnt exists",
+        "signup_type":"email",
+    }
+    )
+    return {
         "message": "If an account exists, a password reset link has been sent."
         }
     if not db_user.is_verified:
+        AuditService.log(
+        db=db,
+        event="RESET_PASSWORD",
+        level="WARNING",
+        user_id=db_user.id,
+        email=db_user.email,
+        endpoint=request.url.path,
+        method=request.method,
+        status_code=403,
+        ip_address=request.client.host if request.client else None,
+        message="Password reset attempted on unverified account",
+        payload={}
+    )
         return {
         "message": "If an account exists, a password reset link has been sent."
         }
@@ -46,6 +77,21 @@ def forgot_password(user:ForgotPassword,db:Session=Depends(get_db)):
     db.refresh(db_new)
     # now we will be sending email verification to the user 
     send_password_reset_email(db_user.email,new_token)
+    AuditService.log(
+            db=db,
+            event="RESET_PASSWORD",
+    level="SUCCESS",
+    user_id=db_user.id,
+    email=db_user.email,
+    endpoint=request.url.path,
+    method=request.method,
+    status_code=200,
+    ip_address=request.client.host if request.client else None,
+    message="Password reset link sent successfully",
+    payload={
+        "Link send":True
+    }
+        )
     return {
         'message':'if your acoount exists then u will recieve a mail to reset your password'
     }
