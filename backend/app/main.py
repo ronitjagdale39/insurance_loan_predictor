@@ -1,7 +1,10 @@
 from app.models import user
 from sqlalchemy.orm import Session
-from fastapi import FastAPI,Depends
+from fastapi import FastAPI,Depends,HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from sqlalchemy.exc import SQLAlchemyError
 from fastapi.middleware.cors import CORSMiddleware
 from app.models import audit
 from app.schemas.schema import UserInfo
@@ -25,7 +28,27 @@ from app.routers.forgot_password import router as forgot_password_router
 from app.admin.router import router as admin_router
 from app.middleware.logging_middleware import LoggingMiddleware
 Base.metadata.create_all(bind=engine)
+from app.core.exception_handler import http_exception_handler,validation_exception_handler,sqlalchemy_exception_handler,generic_exception_handler 
 app=FastAPI(title="Insurance premium predictor",version="1.0")
+app.add_exception_handler(
+    StarletteHTTPException,
+    http_exception_handler
+)
+
+app.add_exception_handler(
+    RequestValidationError,
+    validation_exception_handler
+)
+
+app.add_exception_handler(
+    SQLAlchemyError,
+    sqlalchemy_exception_handler
+)
+
+app.add_exception_handler(
+    Exception,
+    generic_exception_handler
+)
 app.include_router(auth_router)
 app.include_router(admin_router)
 app.include_router(reset_password_router)
@@ -42,6 +65,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+@app.get('/test')
+def test():
+    raise HTTPException(status_code=500,detail="Internal server error")
 @app.get('/')
 def home():
     return {
